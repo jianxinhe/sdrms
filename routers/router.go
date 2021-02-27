@@ -16,6 +16,15 @@ func init() {
 	beego.Router("/course/updateseq", &controllers.CourseController{}, "Post:UpdateSeq")
 	beego.Router("/course/uploadimage", &controllers.CourseController{}, "Post:UploadImage")
 
+	//课件管理路由
+	beego.Router("/courseware/index", &controllers.CourseWareController{}, "*:Index")
+	beego.Router("/courseware/treegrid", &controllers.CourseWareController{}, "POST:TreeGrid")
+	beego.Router("/courseware/edit/?:id", &controllers.CourseWareController{}, "Get,Post:Edit")
+	beego.Router("/courseware/parent", &controllers.CourseWareController{}, "Post:ParentTreeGrid")
+	beego.Router("/courseware/delete", &controllers.CourseWareController{}, "Post:Delete")
+	//快速修改顺序
+	beego.Router("/courseware/updateseq", &controllers.CourseWareController{}, "Post:UpdateSeq")
+
 	//用户角色路由
 	beego.Router("/role/index", &controllers.RoleController{}, "*:Index")
 	beego.Router("/role/datagrid", &controllers.RoleController{}, "Get,Post:DataGrid")

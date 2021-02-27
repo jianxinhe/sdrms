@@ -79,6 +79,35 @@ func ResourceTreeGrid4Parent(id int) []*Resource {
 	return tree
 }
 
+// ResourceTreeGrid5Parent 获取可以成为某个节点父节点的列表(课件管理使用)
+func ResourceTreeGrid5Parent(id int) []*Resource {
+	tree := GetTreeGrid()
+	if id == 0 {
+		return tree
+	}
+	var index = -1
+	//找出当前节点所在索引
+	for i, _ := range tree {
+		if tree[i].Id == id {
+			index = i
+			break
+		}
+	}
+	if index == -1 {
+		return tree
+	} else {
+		tree[index].HtmlDisabled = 1
+		for _, item := range tree[index+1:] {
+			if item.Level > tree[index].Level {
+				item.HtmlDisabled = 1
+			} else {
+				break
+			}
+		}
+	}
+	return tree
+}
+
 // ResourceTreeGridByUserId 根据用户获取有权管理的资源列表，并整理成teegrid格式
 func ResourceTreeGridByUserId(backuserid, maxrtype int) []*Resource {
 	cachekey := fmt.Sprintf("rms_ResourceTreeGridByUserId_%v_%v", backuserid, maxrtype)
