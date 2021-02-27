@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	_ "github.com/lhtzbj12/sdrms/routers"
+	_ "github.com/jianxinhe/sdrms/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"

@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	"github.com/lhtzbj12/sdrms/utils"
+	"github.com/jianxinhe/sdrms/utils"
 
 	"github.com/astaxie/beego/orm"
 )

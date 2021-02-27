@@ -3,9 +3,9 @@ package controllers
 import (
 	"strings"
 
-	"github.com/lhtzbj12/sdrms/enums"
-	"github.com/lhtzbj12/sdrms/models"
-	"github.com/lhtzbj12/sdrms/utils"
+	"github.com/jianxinhe/sdrms/enums"
+	"github.com/jianxinhe/sdrms/models"
+	"github.com/jianxinhe/sdrms/utils"
 
 	"github.com/astaxie/beego/orm"
 )
