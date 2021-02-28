@@ -58,7 +58,9 @@
             html.push('<td class="ellipsis" title="' + e.Name + '">' + e.Name + '</td>');
             html.push('<td class="align-center">');
             if (e.Icon && e.Icon.length > 0) {
-                html.push('<label class="label label-primary"><i class="' + e.Icon + '"></i></label>')
+                // html.push('<label class="label label-primary"><i class="' + e.Icon + '"></i></label>')
+                {{/*html.push('<label class="label label-primary"><img style={{ width: 30, height: 30, cursor: "pointer" }} src={' + e.Icon + '} onClick={() => { this.setState({ showBigImg: true, pic }) }} /></label>')*/}}
+                html.push('<label class="label label-primary"><img style="width: 30, height: 30, cursor: pointer" src="file://E:/学院相关/师母项目/coursesuite/29/course100/1.jpg"/></label>')
             }
             html.push('</td>');
             html.push('<td class="align-center">' + GetRtypeText(e.Rtype) + '</td>');

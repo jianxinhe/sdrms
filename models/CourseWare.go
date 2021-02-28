@@ -2,6 +2,7 @@ package models
 
 import (
 	"container/list"
+	"github.com/astaxie/beego"
 	"io/ioutil"
 )
 
@@ -16,8 +17,7 @@ func GetTreeGrid() []*Resource {
 
 // TraverseFolder 获取文件列表
 func TraverseFolder() ([]*Resource, error) {
-	//storagePath := beego.AppConfig.String("course_ware_storage_path")
-	storagePath := "E:/学院相关/师母项目/coursesuite/"
+	storagePath := beego.AppConfig.String("course_ware_storage_path")
 
 	return getFileList(storagePath)
 }
