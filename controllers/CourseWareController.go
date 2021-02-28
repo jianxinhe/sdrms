@@ -67,21 +67,7 @@ func (c *CourseWareController) ParentTreeGrid() {
 
 // UrlFor2LinkOne 使用URLFor方法，将资源表里的UrlFor值转成LinkUrl
 func (c *CourseWareController) UrlFor2LinkOne(urlfor string) string {
-	if len(urlfor) == 0 {
-		return ""
-	}
-	// ResourceController.Edit,:id,1
-	strs := strings.Split(urlfor, ",")
-	if len(strs) == 1 {
-		return c.URLFor(strs[0])
-	} else if len(strs) > 1 {
-		var values []interface{}
-		for _, val := range strs[1:] {
-			values = append(values, val)
-		}
-		return c.URLFor(strs[0], values...)
-	}
-	return ""
+	return urlfor
 }
 
 //UrlFor2Link 使用URLFor方法，批量将资源表里的UrlFor值转成LinkUrl

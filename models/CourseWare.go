@@ -29,14 +29,6 @@ func getFileList(path string) ([]*Resource, error) {
 	fs, _ := ioutil.ReadDir(path)
 	queue := list.New()
 	id := 1
-	parent := &Resource{
-		Id:     id,
-		Name:   "",
-		Parent: nil,
-		Rtype:  -1,
-		Icon:   "",
-		UrlFor: "",
-	}
 	// 先进行根目录的遍历
 	for _, file := range fs {
 		if file.IsDir() {
@@ -45,7 +37,7 @@ func getFileList(path string) ([]*Resource, error) {
 				Id:     id,
 				Name:   file.Name(),
 				Parent: nil,
-				Rtype:  parent.Rtype + 1,
+				Rtype:  1,
 				Icon:   "",
 				UrlFor: path + file.Name() + "/",
 			}
@@ -60,8 +52,8 @@ func getFileList(path string) ([]*Resource, error) {
 				Id:     id,
 				Name:   file.Name(),
 				Parent: nil,
-				Rtype:  parent.Rtype + 1,
-				Icon:   "",
+				Rtype:  2,
+				Icon:   path + file.Name(),
 				UrlFor: path + file.Name(),
 			}
 			// 直接把文件加入到result当中
@@ -84,7 +76,7 @@ func getFileList(path string) ([]*Resource, error) {
 					Id:     id,
 					Name:   file.Name(),
 					Parent: parent,
-					Rtype:  parent.Rtype + 1,
+					Rtype:  1,
 					Icon:   "",
 					UrlFor: parent.UrlFor + file.Name() + "/",
 				}
@@ -99,8 +91,8 @@ func getFileList(path string) ([]*Resource, error) {
 					Id:     id,
 					Name:   file.Name(),
 					Parent: parent,
-					Rtype:  parent.Rtype + 1,
-					Icon:   "",
+					Rtype:  2,
+					Icon:   parent.UrlFor + file.Name(),
 					UrlFor: parent.UrlFor + file.Name(),
 				}
 				// 直接把文件加入到result当中
