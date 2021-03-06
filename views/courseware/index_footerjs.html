@@ -11,11 +11,13 @@
     $(function () {
         pageInit();
     });
+
     //初始化页面
     function pageInit() {
         //初始化树形表格
         dataGridInit();
     }
+
     //初始化树形表格
     function dataGridInit(doreveal) {
         //从服务器端获取数据
@@ -31,10 +33,11 @@
                 //初始化快速编辑顺序
                 EditableInit(true);
             } else {
-                layer.alert("数据获取失败", { icon: 2, title: '错误' })
+                layer.alert("数据获取失败", {icon: 2, title: '错误'})
             }
         });
     }
+
     //刷新，pk需要高亮的主键，doreveal是否展开节点
     function refresh(pk, doreveal) {
         highlightPk = pk;
@@ -44,7 +47,8 @@
         //滚动到当前位置
         $(window).scrollTop(scrollTop);
     }
-    //将数据拼接到表格中 
+
+    //将数据拼接到表格中
     function fillTable(data) {
         $('tbody', $treeGrid).html('');
         $treeGrid.treetable('destroy');
@@ -54,13 +58,14 @@
             if (e.Parent) {
                 parentid = e.Parent.Id
             }
-            html.push('<tr data-tt-id="' + e.Id + '" data-tt-parent-id="' + parentid + '" data-SonNum="'+e.SonNum+'">');
+            html.push('<tr data-tt-id="' + e.Id + '" data-tt-parent-id="' + parentid + '" data-SonNum="' + e.SonNum + '">');
             html.push('<td class="ellipsis" title="' + e.Name + '">' + e.Name + '</td>');
             html.push('<td class="align-center">');
             if (e.Icon && e.Icon.length > 0) {
                 // html.push('<label class="label label-primary"><i class="' + e.Icon + '"></i></label>')
                 {{/*html.push('<label class="label label-primary"><img style={{ width: 30, height: 30, cursor: "pointer" }} src={' + e.Icon + '} onClick={() => { this.setState({ showBigImg: true, pic }) }} /></label>')*/}}
-                html.push('<label class="label label-primary"><img style="width: 30, height: 30, cursor: pointer" src="file://E:/学院相关/师母项目/coursesuite/29/course100/1.jpg"/></label>')
+                // html.push('<div cursor="pointer"><img src="/coursesuite/29/course100/1.jpg" width="50" height="50" /></div>')
+                html.push('<div cursor="pointer"><img src="' + e.Icon + '" width="50" height="50" /></div>')
             }
             html.push('</td>');
             html.push('<td class="align-center">' + GetRtypeText(e.Rtype) + '</td>');
@@ -82,11 +87,12 @@
         });
         $('tbody', $treeGrid).html(html.join(''));
     }
+
     function treeGridInit() {
         //加载,初始化
         $treeGrid.treetable({
             expandable: true,
-            clickableNodeNames: false,           
+            clickableNodeNames: false,
             onNodeCollapse: function () {
                 //保存展开的节点id到cookie
                 sdtheme.saveExpandStatus('treeGrid');
@@ -104,7 +110,7 @@
             draggingClass: "dragging",
             resizeMode: 'fit',d
             minWidth: 40,
-        });*/      
+        });*/
         //全部展开
         $(".treegridexpend").off('click').on('click', function () {
             $($(this).attr('data-target')).treetable('expandAll');
@@ -114,6 +120,7 @@
             $($(this).attr('data-target')).treetable('collapseAll');
         });
     }
+
     function highlight(highlightPk, doreveal) {
         //高亮显示节点
         if (highlightPk !== null && typeof highlightPk !== 'undefined') {
@@ -127,15 +134,18 @@
             highlightPk = null;
         }
     }
+
     function GetRtypeText(value) {
-        var texts = [{ Text: '文件夹', Value: 0 }, { Text: '文件夹', Value: 1 }, { Text: '图片', Value: 2 } ]
+        var texts = [{Text: '文件夹', Value: 0}, {Text: '文件夹', Value: 1}, {Text: '图片', Value: 2}]
         return sdtheme.showenum(value, texts);
-    } 
+    }
+
     //初始化顺序可编辑
     function EditableInit(doEdit) {
-            if (doEdit === false) return;
-            $('.editable-weight', $treeGrid).editable(rms.getEditableParam('{{urlfor "CourseWareController.UpdateSeq"}}', null, true));
+        if (doEdit === false) return;
+        $('.editable-weight', $treeGrid).editable(rms.getEditableParam('{{urlfor "CourseWareController.UpdateSeq"}}', null, true));
     }
+
     function EditFun(Id) {
         var title = '添加资源';
         if (Id > 0) {
@@ -157,23 +167,24 @@
                 iframeWin.FormSubmit();
             }
         });
-    } 
+    }
+
     function DeleteFun(Id) {
         var url = '{{ urlfor "CourseWareController.Delete"}}';
         //找到节点
-        var node =$treeGrid.find('tr[data-tt-id="' + Id + '"]');
-        if(node.length == 0){
-            layer.alert('请选择想要删除的项',{icon:0,title:'提示'})
+        var node = $treeGrid.find('tr[data-tt-id="' + Id + '"]');
+        if (node.length == 0) {
+            layer.alert('请选择想要删除的项', {icon: 0, title: '提示'})
         }
         var waring = '您是否要删除所选的项？';
-        var sonNum = node.attr('data-SonNUm');        
-        if(sonNum!="0"){
-            waring ='您想要的删除的节点包含子节点，将一起被删除，是否继续？';
+        var sonNum = node.attr('data-SonNUm');
+        if (sonNum != "0") {
+            waring = '您想要的删除的节点包含子节点，将一起被删除，是否继续？';
         }
         layer.confirm(waring, {
             btn: ['是', '否'], icon: 3, title: '请确认'
-        }, function () {            
-            var dataValues = {Id:Id};
+        }, function () {
+            var dataValues = {Id: Id};
             $.sdpost(url, dataValues, function (re) {
                 if (re.code == 0) {
                     layer.msg(re.msg, {icon: 1, title: '成功'});
@@ -183,5 +194,7 @@
                 }
             });
         });
-    }  
+    }
+
+
 </script>

@@ -4,6 +4,7 @@ import (
 	"container/list"
 	"github.com/astaxie/beego"
 	"io/ioutil"
+	"strings"
 )
 
 // GetTreeGrid 获取treegrid顺序的列表
@@ -17,6 +18,7 @@ func GetTreeGrid() []*Resource {
 
 // TraverseFolder 获取文件列表
 func TraverseFolder() ([]*Resource, error) {
+	// 读取配置文件
 	storagePath := beego.AppConfig.String("course_ware_storage_path")
 
 	return getFileList(storagePath)
@@ -53,7 +55,7 @@ func getFileList(path string) ([]*Resource, error) {
 				Name:   file.Name(),
 				Parent: nil,
 				Rtype:  2,
-				Icon:   path + file.Name(),
+				Icon:   removePrefix(path) + file.Name(),
 				UrlFor: path + file.Name(),
 			}
 			// 直接把文件加入到result当中
@@ -92,7 +94,7 @@ func getFileList(path string) ([]*Resource, error) {
 					Name:   file.Name(),
 					Parent: parent,
 					Rtype:  2,
-					Icon:   parent.UrlFor + file.Name(),
+					Icon:   removePrefix(parent.UrlFor) + file.Name(),
 					UrlFor: parent.UrlFor + file.Name(),
 				}
 				// 直接把文件加入到result当中
@@ -102,4 +104,11 @@ func getFileList(path string) ([]*Resource, error) {
 	}
 
 	return result, nil
+}
+
+// removePrefix删除icon的前缀url
+func removePrefix(path string) string {
+	first := strings.Index(path, "/coursesuite")
+
+	return path[first:]
 }

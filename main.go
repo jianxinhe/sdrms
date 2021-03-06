@@ -8,5 +8,8 @@ import (
 )
 
 func main() {
+	// 读取配置文件
+	imgPath := beego.AppConfig.String("img_root_path")
+	beego.SetStaticPath("/coursesuite", imgPath)
 	beego.Run()
 }
