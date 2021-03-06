@@ -61,11 +61,23 @@
             html.push('<tr data-tt-id="' + e.Id + '" data-tt-parent-id="' + parentid + '" data-SonNum="' + e.SonNum + '">');
             html.push('<td class="ellipsis" title="' + e.Name + '">' + e.Name + '</td>');
             html.push('<td class="align-center">');
+            // 静态模框
+            html.push('<!-- 显示大图部分 -->\n' +
+                '<div class="modal fade bs-example-modal-lg text-center" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >\n' +
+                '\t<div class="modal-dialog modal-lg" ><!-- style="display: inline-block; width: auto;" -->\n' +
+                '\t\t<div class="modal-content">\n' +
+                '\t\t\t<div class="modal-header">\n' +
+                '\t\t\t\t<button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
+                '\t\t\t\t\t<span aria-hidden="true">×</span>\n' +
+                '\t\t\t\t</button>\n' +
+                '\t\t\t\t<h4 class="modal-title" id="modalLabel"></h4>\n' +
+                '\t\t\t</div>\n' +
+                '\t\t\t<img alt="暂无图片" id="imgInModalID" src="" width="90%" >\n' +
+                '\t\t</div>\n' +
+                '\t</div>\n' +
+                '</div>\n');
             if (e.Icon && e.Icon.length > 0) {
-                // html.push('<label class="label label-primary"><i class="' + e.Icon + '"></i></label>')
-                {{/*html.push('<label class="label label-primary"><img style={{ width: 30, height: 30, cursor: "pointer" }} src={' + e.Icon + '} onClick={() => { this.setState({ showBigImg: true, pic }) }} /></label>')*/}}
-                // html.push('<div cursor="pointer"><img src="/coursesuite/29/course100/1.jpg" width="50" height="50" /></div>')
-                html.push('<div cursor="pointer"><img src="' + e.Icon + '" width="50" height="50" /></div>')
+                html.push('<div cursor="pointer"><img style="cursor:pointer" src="' + e.Icon + '" width="50" height="50" onclick="ShowBigImg(\'' + e.Icon + '\',\'' + e.Name + '\')" /></div>')
             }
             html.push('</td>');
             html.push('<td class="align-center">' + GetRtypeText(e.Rtype) + '</td>');
@@ -86,6 +98,13 @@
             html.push('</tr>');
         });
         $('tbody', $treeGrid).html(html.join(''));
+    }
+
+    // 查看大图
+    function ShowBigImg(path, name) {
+        $("#modalLabel").text(name);
+        $("#imgInModalID").attr("src", path);
+        $("#imgModal").modal('show');
     }
 
     function treeGridInit() {
