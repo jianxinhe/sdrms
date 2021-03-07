@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -13,6 +14,7 @@ import (
 
 type CourseWareController struct {
 	BaseController
+	tree []*models.Resource
 }
 
 func (c *CourseWareController) Prepare() {
@@ -23,6 +25,10 @@ func (c *CourseWareController) Prepare() {
 	//如果一个Controller的所有Action都需要登录验证，则将验证放到Prepare
 	//这里注释了权限控制，因此这里需要登录验证
 	//c.checkLogin()
+	tree := models.GetTreeGrid()
+	//转换UrlFor 2 LinkUrl
+	c.UrlFor2Link(tree)
+	c.tree = tree
 }
 func (c *CourseWareController) Index() {
 	//需要权限控制
@@ -43,6 +49,7 @@ func (c *CourseWareController) TreeGrid() {
 	tree := models.GetTreeGrid()
 	//转换UrlFor 2 LinkUrl
 	c.UrlFor2Link(tree)
+	c.tree = tree
 	c.jsonResult(enums.JRCodeSucc, "", tree)
 }
 
@@ -162,11 +169,26 @@ func (c *CourseWareController) Delete() {
 	if Id == 0 {
 		c.jsonResult(enums.JRCodeFailed, "选择的数据无效", 0)
 	}
-	query := orm.NewOrm().QueryTable(models.ResourceTBName())
-	if _, err := query.Filter("id", Id).Delete(); err == nil {
-		c.jsonResult(enums.JRCodeSucc, fmt.Sprintf("删除成功"), 0)
-	} else {
+
+	fileName := ""
+	for _, v := range c.tree {
+		if v.Id == Id {
+			fileName = v.LinkUrl
+			break
+		}
+	}
+	if fileName == "" {
+		// 删除的文件或文件夹不存在
+		c.jsonResult(enums.JRCodeFailed, "删除的文件或文件夹不存在", 0)
+	}
+
+	err := os.Remove(fileName)
+	if err != nil {
+		// 删除失败
 		c.jsonResult(enums.JRCodeFailed, "删除失败", 0)
+	} else {
+		// 删除成功
+		c.jsonResult(enums.JRCodeSucc, fmt.Sprintf("删除成功"), 0)
 	}
 }
 
