@@ -182,7 +182,7 @@ func (c *CourseWareController) Delete() {
 		c.jsonResult(enums.JRCodeFailed, "删除的文件或文件夹不存在", 0)
 	}
 
-	err := os.Remove(fileName)
+	err := os.RemoveAll(fileName)
 	if err != nil {
 		// 删除失败
 		c.jsonResult(enums.JRCodeFailed, "删除失败", 0)
