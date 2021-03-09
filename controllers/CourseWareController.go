@@ -46,11 +46,14 @@ func (c *CourseWareController) Index() {
 
 //TreeGrid 获取文件夹中所有资源的列表
 func (c *CourseWareController) TreeGrid() {
-	tree := models.GetTreeGrid()
-	//转换UrlFor 2 LinkUrl
-	c.UrlFor2Link(tree)
-	c.tree = tree
-	c.jsonResult(enums.JRCodeSucc, "", tree)
+	if c.tree == nil || len(c.tree) == 0 {
+		tree := models.GetTreeGrid()
+		//转换UrlFor 2 LinkUrl
+		c.UrlFor2Link(tree)
+		c.tree = tree
+	}
+
+	c.jsonResult(enums.JRCodeSucc, "", c.tree)
 }
 
 //UserMenuTree 获取用户有权管理的菜单、区域列表
